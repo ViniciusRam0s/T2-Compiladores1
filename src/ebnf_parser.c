@@ -13,11 +13,6 @@
  *   seq          = { fator } ;
  *   fator        = NOME_TERM | LITERAL | NAOTERM
  *                | "(" expr ")" | "[" expr "]" | "{" expr "}" ;
- *
- * Cada nao terminal da notacao vira uma funcao parse_X. As funcoes
- * parse_expr, parse_seq e parse_fator constroem a arvore Expr do lado
- * direito das regras (ver gramatica.h). Erros sao recuperados por
- * sincronizacao no ';'.
  */
 #include <stdlib.h>
 #include <string.h>
@@ -31,10 +26,7 @@ typedef struct {
     Gramatica *g;
 } Parser;
 
-/* ------------------------------------------------------------------ */
-/* Primitivas                                                         */
-/* ------------------------------------------------------------------ */
-
+/* Primitivas */
 /* Consome o token corrente. Tokens MT_ERRO (ja reportados pelo
  * lexer) sao descartados. */
 static void avancar(Parser *p)
@@ -77,13 +69,7 @@ static void sincronizar(Parser *p)
         avancar(p);
 }
 
-/* ------------------------------------------------------------------ */
-/* Expressoes (lado direito das regras)                               */
-/* ------------------------------------------------------------------ */
-
 static Expr *parse_expr(Parser *p);
-
-/* 1 se o token corrente pode iniciar um fator (FIRST de fator). */
 static int inicia_fator(const Parser *p)
 {
     switch (p->tok.tipo) {
@@ -172,10 +158,7 @@ static Expr *parse_expr(Parser *p)
     return alt;
 }
 
-/* ------------------------------------------------------------------ */
-/* Secoes e regras (fornecido)                                        */
-/* ------------------------------------------------------------------ */
-
+/* Secoes e regras (fornecido)*/
 /* def_token = NOME_TERM "=" REGEX ";" | "SKIP" "=" REGEX ";" ; */
 static void parse_def_token(Parser *p)
 {
