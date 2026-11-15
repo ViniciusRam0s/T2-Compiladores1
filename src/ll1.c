@@ -8,15 +8,6 @@
  *      dos FIRST das demais.
  *   3. Em [ a ] e { a }, a nao e anulavel e FIRST(a) e disjunto do
  *      FOLLOW da construcao.
- *
- * Violacoes de 1, 2 e da primeira parte de 3 sao ERROS. A violacao de
- * FIRST(a) inter FOLLOW nao vazio em [ a ] ou { a } e reportada como
- * AVISO e resolvida de forma gulosa: o analisador gerado entra na
- * construcao sempre que o token estiver em FIRST(a). E o caso classico
- * do "else pendente":  if = "if" "(" expr ")" cmd [ "else" cmd ] ;
- * em que o else fica com o if mais proximo, como em C.
- *
- * reportar formata as mensagens; verificar_expr percorre cada regra.
  */
 #include <stdarg.h>
 #include <stdio.h>
@@ -55,14 +46,12 @@ static int verificar_alt(const Gramatica *g, int nt, const Expr *e)
     bitset_iniciar(&comum, g->nterms);
     for (i = 0; i < e->nfilhos; i++) {
         for (j = i + 1; j < e->nfilhos; j++) {
-            /* 1. FIRST disjuntos dois a dois */
             bitset_intersecao(&comum, &e->filhos[i]->first, &e->filhos[j]->first);
             if (!bitset_vazio(&comum)) {
                 reportar(g, nt, e, 0, &comum, "alternativas %d e %d comecam com",
                          i + 1, j + 1);
                 erros++;
             }
-            /* 1. no maximo uma alternativa anulavel */
             if (e->filhos[i]->anulavel && e->filhos[j]->anulavel) {
                 reportar(g, nt, e, 0, NULL, "alternativas %d e %d sao ambas anulaveis",
                          i + 1, j + 1);
@@ -70,8 +59,6 @@ static int verificar_alt(const Gramatica *g, int nt, const Expr *e)
             }
         }
     }
-    /* 2. alternativa anulavel: o que vem depois da construcao nao pode
-     * iniciar outra alternativa */
     for (i = 0; i < e->nfilhos; i++) {
         if (!e->filhos[i]->anulavel)
             continue;
