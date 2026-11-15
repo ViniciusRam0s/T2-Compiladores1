@@ -1,19 +1,9 @@
-/*
- * conjuntos.c - Calculo de anulavel, FIRST e FOLLOW (etapa 3).
- *
- * conj_anulavel, conj_first e conj_follow sao calculados por iteracao
- * ate ponto fixo: repete-se uma passada sobre todas as regras enquanto
- * algum conjunto (ou flag) mudar. bitset_unir devolve 1 quando o conjunto
- * de destino muda, o que detecta o ponto fixo.
- */
 #include <stdio.h>
 #include <string.h>
 #include "conjuntos.h"
 #include "util.h"
 
-/* ------------------------------------------------------------------ */
-/* Fornecido                                                          */
-/* ------------------------------------------------------------------ */
+/* Fornecido */
 
 static void iniciar_expr(Expr *e, void *ctx)
 {
@@ -56,12 +46,9 @@ void conj_imprimir(FILE *f, const Gramatica *g)
     }
 }
 
-/* ------------------------------------------------------------------ */
-/* Anulavel                                                           */
-/* ------------------------------------------------------------------ */
+/* Anulavel */
 
-/* Calcula e grava e->anulavel (e o dos descendentes) com os valores
- * atuais de g->nts[].anulavel. Devolve o valor calculado. */
+/* Calcula e grava e->anulavel (e o dos descendentes) com os valores*/
 static int calc_anulavel(const Gramatica *g, Expr *e)
 {
     int i, r = 0;
@@ -97,8 +84,7 @@ static int calc_anulavel(const Gramatica *g, Expr *e)
 }
 
 /* Ponto fixo: comeca com todos "nao anulavel" (conj_iniciar) e repete
- * enquanto algum nao terminal passar a anulavel. Na ultima passada
- * nada muda, entao os nos Expr ficam com os valores finais. */
+ * enquanto algum nao terminal passar a anulavel.*/
 void conj_anulavel(Gramatica *g)
 {
     int i, mudou;
@@ -115,10 +101,7 @@ void conj_anulavel(Gramatica *g)
     } while (mudou);
 }
 
-/* ------------------------------------------------------------------ */
-/* FIRST                                                              */
-/* ------------------------------------------------------------------ */
-
+/* FIRST*/
 /* Acrescenta a e->first (e ao dos descendentes) o que os FIRST atuais
  * permitem concluir. Devolve 1 se algum conjunto cresceu. */
 static int calc_first(const Gramatica *g, Expr *e)
@@ -137,9 +120,6 @@ static int calc_first(const Gramatica *g, Expr *e)
     case E_VAZIO:
         break;
     case E_SEQ:
-        /* O FIRST de todos os filhos e calculado (o gerador de codigo
-         * usa-os), mas so contribuem para o da sequencia os filhos
-         * ate o primeiro nao anulavel, inclusive. */
         for (i = 0; i < e->nfilhos; i++) {
             mudou |= calc_first(g, e->filhos[i]);
             if (prefixo_anulavel) {
@@ -173,10 +153,7 @@ void conj_first(Gramatica *g)
     } while (mudou);
 }
 
-/* ------------------------------------------------------------------ */
-/* FOLLOW                                                             */
-/* ------------------------------------------------------------------ */
-
+/* FOLLOW*/
 /* Propaga e->follow para os descendentes de e (e para o FOLLOW dos
  * nao terminais usados). Devolve 1 se algum conjunto cresceu. */
 static int calc_follow(Gramatica *g, Expr *e)
@@ -191,9 +168,6 @@ static int calc_follow(Gramatica *g, Expr *e)
         mudou = bitset_unir(&g->nts[e->simbolo].follow, &e->follow);
         break;
     case E_SEQ:
-        /* Da direita para a esquerda, "depois" guarda o que pode vir
-         * logo apos o filho i: FIRST(a[i+1] ... a[n]), mais o follow da
-         * sequencia se a[i+1] ... a[n] for anulavel. */
         bitset_iniciar(&depois, g->nterms);
         bitset_copiar(&depois, &e->follow);
         for (i = e->nfilhos - 1; i >= 0; i--) {
