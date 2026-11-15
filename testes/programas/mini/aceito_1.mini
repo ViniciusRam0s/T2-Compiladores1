@@ -1,0 +1,14 @@
+# soma os numeros de 1 a n
+programa soma;
+var n, i, total : inteiro;
+inicio
+  n := 10;
+  i := 1;
+  total := 0;
+  enquanto i < n + 1 faca
+  inicio
+    total := total + i;
+    i := i + 1;
+  fim
+  escreva("total = ", total);
+fim.

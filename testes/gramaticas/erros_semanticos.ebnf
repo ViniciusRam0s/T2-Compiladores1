@@ -1,0 +1,9 @@
+(* Deve ser RECUSADA: item nao tem regra, ID nao foi declarado em
+   TOKENS e sobra nunca e usada (este ultimo e so um aviso) *)
+TOKENS
+  NUM  = /[0-9]+/ ;
+  SKIP = /[ \t\r\n]+/ ;
+
+RULES
+  lista = "(" { item } ")" | ID ;
+  sobra = NUM ;

@@ -1,0 +1,11 @@
+/* senao pendente: o senao fica com o "se" mais proximo.
+   Este comentario de bloco tem ** asteriscos ** e ocupa duas linhas. */
+programa sete;
+var x : real;
+inicio
+  x := -2.5 * (3 + 4) / 2;
+  se x < 0 entao
+    se x <> -1 entao escreva("negativo");
+    senao escreva("menos um");
+  escreva();   # lista de argumentos vazia
+fim.

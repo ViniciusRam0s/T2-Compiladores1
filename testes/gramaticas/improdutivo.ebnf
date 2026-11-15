@@ -1,0 +1,10 @@
+(* Deve ser RECUSADA: laco nunca termina de derivar (toda derivacao de
+   laco contem outro laco), entao nao gera nenhuma cadeia de terminais;
+   inicio depende dele e tambem e improdutivo *)
+TOKENS
+  NUM  = /[0-9]+/ ;
+  SKIP = /[ \t\r\n]+/ ;
+
+RULES
+  inicio = NUM laco ;
+  laco   = "(" laco ")" | "-" laco ;

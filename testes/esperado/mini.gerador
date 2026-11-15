@@ -1,0 +1,23 @@
+NAO TERMINAL  ANULAVEL  FIRST / FOLLOW
+programa      nao       FIRST  = {'programa'}
+                        FOLLOW = {$}
+declaracao    nao       FIRST  = {'var'}
+                        FOLLOW = {'var', 'inicio'}
+bloco         nao       FIRST  = {'inicio'}
+                        FOLLOW = {ID, '.', 'inicio', 'fim', 'se', 'senao', 'enquanto', 'escreva'}
+tipo          nao       FIRST  = {'inteiro', 'real'}
+                        FOLLOW = {';'}
+comando       nao       FIRST  = {ID, 'inicio', 'se', 'enquanto', 'escreva'}
+                        FOLLOW = {ID, 'inicio', 'fim', 'se', 'senao', 'enquanto', 'escreva'}
+expr          nao       FIRST  = {ID, NUM, TEXTO, '(', '-'}
+                        FOLLOW = {';', ',', 'entao', 'faca', ')'}
+args          sim       FIRST  = {ID, NUM, TEXTO, '(', '-'}
+                        FOLLOW = {')'}
+simples       nao       FIRST  = {ID, NUM, TEXTO, '(', '-'}
+                        FOLLOW = {';', ',', 'entao', 'faca', ')', '=', '<>', '<', '>'}
+termo         nao       FIRST  = {ID, NUM, TEXTO, '('}
+                        FOLLOW = {';', ',', 'entao', 'faca', ')', '=', '<>', '<', '>', '-', '+'}
+fator         nao       FIRST  = {ID, NUM, TEXTO, '('}
+                        FOLLOW = {';', ',', 'entao', 'faca', ')', '=', '<>', '<', '>', '-', '+', '*', '/'}
+testes/gramaticas/mini.ebnf:20:42: aviso: conflito LL(1) em comando: FIRST e FOLLOW de [ ] se intersectam (resolvido de forma gulosa) em {'senao'}
+status 0

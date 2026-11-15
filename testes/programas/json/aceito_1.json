@@ -1,0 +1,7 @@
+{
+  "nome": "gerador",
+  "versao": 2,
+  "ll1": true,
+  "autor": null,
+  "etapas": ["leitura", "verificacao", "conjuntos", "ll1", "geracao"]
+}

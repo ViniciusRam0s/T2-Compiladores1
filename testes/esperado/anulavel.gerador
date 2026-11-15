@@ -1,0 +1,15 @@
+NAO TERMINAL  ANULAVEL  FIRST / FOLLOW
+inicio        nao       FIRST  = {'('}
+                        FOLLOW = {$}
+lista         nao       FIRST  = {'('}
+                        FOLLOW = {NUM, '+', '-'}
+sinal         sim       FIRST  = {'+', '-'}
+                        FOLLOW = {NUM}
+cauda         sim       FIRST  = {';'}
+                        FOLLOW = {';'}
+testes/gramaticas/anulavel.ebnf:12:16: erro: conflito LL(1) em lista: o conteudo de { } e anulavel
+testes/gramaticas/anulavel.ebnf:12:18: aviso: conflito LL(1) em lista: FIRST e FOLLOW de [ ] se intersectam (resolvido de forma gulosa) em {','}
+testes/gramaticas/anulavel.ebnf:13:12: erro: conflito LL(1) em sinal: alternativas 1 e 2 sao ambas anulaveis
+testes/gramaticas/anulavel.ebnf:14:12: erro: conflito LL(1) em cauda: a alternativa 2 e anulavel e o FOLLOW intersecta o FIRST da alternativa 1 em {';'}
+testes/gramaticas/anulavel.ebnf: a gramatica nao e LL(1); nenhum codigo foi gerado
+status 1

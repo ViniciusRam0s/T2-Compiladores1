@@ -1,0 +1,28 @@
+(* Mini: uma linguagem imperativa pequena, em portugues. Exercita:
+     - tres diretivas SKIP (brancos, comentario de linha e de bloco);
+     - palavras reservadas com prioridade sobre ID ("se" x "sete");
+     - uma alternativa vazia (args), que vira o else final do if gerado;
+     - o "senao" pendente, resolvido de forma gulosa (aviso). *)
+TOKENS
+  ID    = /[a-zA-Z_][a-zA-Z0-9_]*/ ;
+  NUM   = /[0-9]+(\.[0-9]+)?/ ;
+  TEXTO = /"[^"\n]*"/ ;
+  SKIP  = /[ \t\r\n]+/ ;
+  SKIP  = /#[^\n]*/ ;
+  SKIP  = /\/\*([^*]|\*+[^*\/])*\*+\// ;
+
+RULES
+  programa   = "programa" ID ";" { declaracao } bloco "." ;
+  declaracao = "var" ID { "," ID } ":" tipo ";" ;
+  tipo       = "inteiro" | "real" ;
+  bloco      = "inicio" { comando } "fim" ;
+  comando    = ID ":=" expr ";"
+             | "se" expr "entao" comando [ "senao" comando ]
+             | "enquanto" expr "faca" comando
+             | "escreva" "(" args ")" ";"
+             | bloco ;
+  args       = expr { "," expr } | ;
+  expr       = simples [ ( "=" | "<>" | "<" | ">" ) simples ] ;
+  simples    = [ "-" ] termo { ( "+" | "-" ) termo } ;
+  termo      = fator { ( "*" | "/" ) fator } ;
+  fator      = NUM | ID | TEXTO | "(" expr ")" ;

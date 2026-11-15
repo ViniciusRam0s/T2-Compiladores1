@@ -1,0 +1,4 @@
+testes/gramaticas/erros_semanticos.ebnf:8:17: erro: nao terminal item usado mas nao definido
+testes/gramaticas/erros_semanticos.ebnf:8:30: erro: terminal ID nao declarado em TOKENS
+testes/gramaticas/erros_semanticos.ebnf:9:3: aviso: nao terminal sobra inalcancavel a partir de lista
+status 1

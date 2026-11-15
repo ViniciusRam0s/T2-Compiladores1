@@ -1,0 +1,14 @@
+(* Deve ser RECUSADA por tres conflitos LL(1) ligados a cadeia vazia:
+     - lista: o conteudo de { } e anulavel (o laco nunca terminaria);
+     - sinal: duas alternativas anulaveis;
+     - cauda: a alternativa vazia e seguida por ";", que tambem inicia
+       a outra alternativa *)
+TOKENS
+  NUM  = /[0-9]+/ ;
+  SKIP = /[ \t\r\n]+/ ;
+
+RULES
+  inicio = lista sinal NUM cauda ";" ;
+  lista  = "(" { [ "," ] } ")" ;
+  sinal  = [ "+" ] | [ "-" ] ;
+  cauda  = ";" NUM | ;
