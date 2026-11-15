@@ -1,30 +1,3 @@
-/*
- * gramatica.h - Representacao interna de uma gramatica EBNF.
- *
- * Uma gramatica e formada por:
- *   - uma tabela de terminais (indice 0 reservado para o fim de arquivo "$");
- *   - uma tabela de nao terminais, cada um com sua regra (arvore Expr);
- *   - expressoes regulares das diretivas SKIP;
- *   - o simbolo inicial (o primeiro nao terminal definido em RULES).
- *
- * O lado direito de cada regra e uma arvore de expressoes:
- *
- *   EBNF                Expr
- *   t (terminal)        E_TERM     (simbolo = indice em g->terms)
- *   B (nao terminal)    E_NAOTERM  (simbolo = indice em g->nts)
- *   a b c               E_SEQ      (filhos = a, b, c)
- *   a | b | c           E_ALT      (filhos = a, b, c)
- *   [ a ]               E_OPC      (filhos[0] = a)
- *   { a }               E_REP      (filhos[0] = a)
- *   ( a )               a          (o agrupamento nao gera no proprio)
- *   (sequencia vazia)   E_VAZIO
- *
- * Os campos anulavel, first e follow de Expr e NaoTerminal sao
- * preenchidos pelo modulo conjuntos.c.
- *
- * Modulo FORNECIDO: nao e necessario altera-lo, mas voce pode acrescentar
- * campos se precisar.
- */
 #ifndef GRAMATICA_H
 #define GRAMATICA_H
 
@@ -45,26 +18,26 @@ typedef struct Expr {
     int linha, coluna;         /* posicao no arquivo .ebnf */
 
     /* Atributos calculados em conjuntos.c */
-    int anulavel;              /* 1 se a expressao deriva a cadeia vazia */
-    Bitset first;              /* FIRST da expressao */
-    Bitset follow;             /* tokens que podem vir logo apos ela */
+    int anulavel;
+    Bitset first;
+    Bitset follow;
 } Expr;
 
 typedef struct {
-    char *nome;        /* "NUM"; para literais, o texto sem aspas: "while", "+" */
-    int literal;       /* 1 se veio de "..." ou '...' */
-    char *regex;       /* expressao regular de TOKENS (NULL para literais) */
-    char *exibicao;    /* nome para mensagens: NUM, 'while', '+' */
-    char *nome_c;      /* nome no codigo gerado (definido em codegen.c) */
-    int declarado;     /* 1 se declarado em TOKENS (literais: sempre 1) */
-    int linha, coluna; /* primeira ocorrencia */
+    char *nome;
+    int literal;
+    char *regex;
+    char *exibicao;
+    char *nome_c;
+    int declarado;
+    int linha, coluna;
 } Terminal;
 
 typedef struct {
     char *nome;
-    Expr *regra;       /* NULL enquanto nao definido */
-    int linha, coluna; /* primeira ocorrencia (uso ou definicao) */
-    int linha_def;     /* linha da definicao (0 se indefinido) */
+    Expr *regra;
+    int linha, coluna;
+    int linha_def;
 
     /* Atributos calculados em conjuntos.c */
     int anulavel;
@@ -76,8 +49,8 @@ typedef struct {
     Terminal *terms;     int nterms, capterms;
     NaoTerminal *nts;    int nnts, capnts;
     char **skips;        int nskips, capskips;
-    int inicial;              /* indice do simbolo inicial (-1 se nenhum) */
-    char *tokens_externos;    /* caminho de "TOKENS EXTERN"; NULL se nao usado */
+    int inicial;
+    char *tokens_externos; 
 } Gramatica;
 
 /* --- Gramatica --- */
@@ -96,7 +69,7 @@ int gram_busca_naoterminal(const Gramatica *g, const char *nome);
 
 void gram_add_skip(Gramatica *g, const char *regex);
 
-/* --- Expressoes --- */
+/* Expressoes*/
 Expr *expr_criar(TipoExpr tipo, int linha, int coluna);
 Expr *expr_simbolo(TipoExpr tipo, int simbolo, int linha, int coluna);
 Expr *expr_unario(TipoExpr tipo, Expr *filho, int linha, int coluna);
