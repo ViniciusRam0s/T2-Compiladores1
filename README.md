@@ -1,4 +1,5 @@
 aluno: 202219040485
+
 uso_ia: sim
 
 # Compiladores I — Trabalho Prático 2: Gerador de Analisadores Sintáticos Descendentes Recursivos
